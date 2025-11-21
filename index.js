@@ -1,4 +1,5 @@
 const express = require('express');
+const cors =require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = 3000;
@@ -30,6 +31,17 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const db = client.db('study-db');
+    const partnerCollection = db.collection('partner')
+
+
+    app.get ('/partners' , (req ,res) => {
+
+
+      res.send('models')
+    })
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
