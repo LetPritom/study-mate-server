@@ -1,6 +1,6 @@
 const express = require('express');
 const cors =require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = 3000;
 
@@ -36,11 +36,46 @@ async function run() {
     const partnerCollection = db.collection('partner')
 
 
-    app.get ('/partners' , (req ,res) => {
+// get data
 
+    app.get ('/partners' , async (req ,res) => {
 
-      res.send('models')
+      const result = await partnerCollection.find().toArray()
+      res.send(result)
     })
+
+
+  // profile data
+
+  app.get('/partners/:id' , async (req ,res) => {
+    const {id} = req.params;
+    const objectId = new ObjectId(id)
+    const result = await partnerCollection.findOne({_id: objectId})
+    console.log(id)
+    res.send({
+      success : true,
+      result
+    })
+  })
+
+
+
+
+
+    // insert data
+
+    app.post('/partners' , async (req,res) => {
+        const data = req.body;
+        console.log(data);
+        const result = await partnerCollection.insertOne(data)
+        res.send({
+          success: true,
+          result
+        });
+    })
+
+
+    
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
