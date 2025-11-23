@@ -34,12 +34,13 @@ async function run() {
 
     const db = client.db('study-db');
     const partnerCollection = db.collection('partner')
+    const requestCollection = db.collection('request')
+
 
 
 // get data
 
     app.get ('/partners' , async (req ,res) => {
-
       const result = await partnerCollection.find().toArray()
       res.send(result)
     })
@@ -58,11 +59,19 @@ async function run() {
     })
   })
 
+  //request-data 
+
+  app.get('/request' , async (req,res) => {
+    const email = req.query.email;
+    const result = await requestCollection.find({request_by: email }).toArray();
+    res.send(result);
+  })
 
 
 
 
-    // insert data
+
+    // insert data 
 
     app.post('/partners' , async (req,res) => {
         const data = req.body;
@@ -72,6 +81,13 @@ async function run() {
           success: true,
           result
         });
+    })
+
+
+    app.post('/request' , async (req,res) => {
+      const data = req.body;
+      const result = await requestCollection.insertOne(data);
+      res.send(result);
     })
 
 
