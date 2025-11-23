@@ -81,6 +81,32 @@ async function run() {
   })
 
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+
+// delete data
+
+// app.delete('/partners/:id' ,async (req , res) => {
+//   const {id} = req.params ;
+//   const objectId = new ObjectId(id);
+//   const filter = {_id: objectId};
+//   const result= await partnerCollection.deleteOne(filter)
+
+//   res.send(result);
+// })
+
+// query method
+
+
+app.delete('/delete-partners' , async(req,res) => {
+  const {id} = req.query;
+  const objectId = new ObjectId(id);
+  const filter = {_id: objectId};
+  const result = await partnerCollection.deleteOne(filter)
+
+  res.send(result);
+})
+
 
 
   // update data
