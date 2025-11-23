@@ -84,10 +84,20 @@ async function run() {
     })
 
 
-    app.post('/request' , async (req,res) => {
+    app.post('/request/:id' , async (req,res) => {
+      const id = req.params.id;
       const data = req.body;
       const result = await requestCollection.insertOne(data);
-      res.send(result);
+
+      const filter = {_id: new ObjectId(id)}
+      const update = {
+        $inc : {
+          partnerCount: 1
+        }
+      }
+
+      const UpdatePartnerCount = await partnerCollection.updateOne(filter,update);
+      res.send(result , UpdatePartnerCount);
     })
 
 
