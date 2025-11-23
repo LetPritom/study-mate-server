@@ -46,6 +46,19 @@ async function run() {
     })
 
 
+    app.get('/request/:id', async (req, res) => {
+  const { id } = req.params;
+  const objectId = new ObjectId(id);
+
+  const result = await requestCollection.findOne({ _id: objectId });
+
+  res.send({
+    success: true,
+    result
+  });
+});
+
+
   // profile data
 
   app.get('/partners/:id' , async (req ,res) => {
@@ -70,6 +83,21 @@ async function run() {
 
 
 
+  // update data
+
+  app.put('/partners/:id' , async (req, res) => {
+    const {id} = req.params;
+    const data = req.body;
+    const objectId = new ObjectId(id);
+    const filter = {_id:objectId}
+    const update = {
+      $set: data
+    }
+
+    const result =await partnerCollection.updateOne(filter,update) //requestCollection dile oi khane update hobe
+    res.send(result);
+  })
+
 
     // insert data 
 
@@ -83,6 +111,7 @@ async function run() {
         });
     })
 
+//  count ++
 
     app.post('/request/:id' , async (req,res) => {
       const id = req.params.id;
