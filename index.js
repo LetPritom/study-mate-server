@@ -46,7 +46,9 @@ async function run() {
     })
 
 
-    app.get('/request/:id', async (req, res) => {
+
+
+  app.get('/request/:id', async (req, res) => {
   const { id } = req.params;
   const objectId = new ObjectId(id);
 
@@ -72,7 +74,7 @@ async function run() {
     })
   })
 
-  //request-data 
+  //request-data get kora hoiche email diye query kore
 
   app.get('/request' , async (req,res) => {
     const email = req.query.email;
@@ -112,7 +114,7 @@ app.delete('/delete-partners' , async(req,res) => {
   const {id} = req.query;
   const objectId = new ObjectId(id);
   const filter = {_id: objectId};
-  const result = await partnerCollection.deleteOne(filter)
+  const result = await requestCollection.deleteOne(filter)
 
   res.send(result);
 })
@@ -121,7 +123,7 @@ app.delete('/delete-partners' , async(req,res) => {
 
   // update data
 
-  app.put('/partners/:id' , async (req, res) => {
+  app.put('/request/:id' , async (req, res) => {
     const {id} = req.params;
     const data = req.body;
     const objectId = new ObjectId(id);
@@ -130,7 +132,7 @@ app.delete('/delete-partners' , async(req,res) => {
       $set: data
     }
 
-    const result =await partnerCollection.updateOne(filter,update) //requestCollection dile oi khane update hobe
+    const result =await requestCollection.updateOne(filter,update) //requestCollection dile oi khane update hobe
     res.send(result);
   })
 
