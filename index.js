@@ -81,6 +81,16 @@ async function run() {
   })
 
 
+  // search get
+
+  app.get('/search' ,async (req , res) => {
+    const search = req.query.search;
+    console.log(search);
+    const result = await partnerCollection.find({subject: {$regex: search , $options: 'i'}}).toArray()
+    res.send(result);
+  })
+
+
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 
