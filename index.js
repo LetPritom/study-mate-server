@@ -58,6 +58,22 @@ async function run() {
 });
 
 
+// sort query
+
+app.get('/sort-partner', async (req, res) => {
+  const { level } = req.query;
+  let result;
+
+  if (level) {
+    result = await partnerCollection.find({ experienceLevel: level }).toArray();
+  } else {
+    result = await partnerCollection.find().toArray();
+  }
+
+  res.send(result);
+});
+
+
   // profile data
 
   app.get('/partners/:id' , async (req ,res) => {
@@ -80,7 +96,7 @@ async function run() {
   })
 
 
-  // search get
+  // search get query
 
   app.get('/search' ,async (req , res) => {
     const search = req.query.search;
