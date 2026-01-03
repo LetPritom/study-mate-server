@@ -38,8 +38,17 @@ async function run() {
 // get data
 
     app.get ('/partners' , async (req ,res) => {
-      const result = await partnerCollection.find().toArray()
-      res.send(result)
+      const {limit , skip} = req.query
+      console.log(limit)
+      const result = await partnerCollection
+      .find()
+      .limit(Number(limit))
+      .skip(Number(skip))
+      .project({location:0 , availabilityTime: 0})
+      .toArray()
+
+      const count = await partnerCollection.countDocuments()
+      res.send({result , total:count})
     })
 
 
@@ -145,7 +154,7 @@ app.delete('/delete-partners' , async(req,res) => {
       $set: data
     }
 
-    const result =await requestCollection.updateOne(filter,update) //requestCollection dile oi khane update hobe
+    const result =await requestCollection.updateOne(filter,update) // requestCollection dile oi khane update hobe
     res.send(result);
   })
 
